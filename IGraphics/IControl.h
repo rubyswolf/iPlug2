@@ -748,7 +748,7 @@ public:
       i = Clip(i, 1, mBitmap.N());
     }
     IBlend blend = mControl->GetBlend();
-    g.DrawBitmap(mBitmap, mControl->GetRECT().GetCentredInside(IRECT(0, 0, mBitmap)), i, &blend);
+    g.DrawFittedBitmap(mBitmap, mControl->GetRECT(), i, &blend);
   }
 
 protected:

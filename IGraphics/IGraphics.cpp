@@ -72,6 +72,38 @@ IGraphics::~IGraphics()
   svgStorage.Release();
 }
 
+
+//Start of Extensions
+
+void IGraphics::DrawFittedBitmap(const IBitmap& bitmap, const IRECT& bounds, int bmpState, const IBlend* pBlend)
+{
+  int srcX = 0;
+  int srcY = 0;
+
+  bmpState = Clip(bmpState, 1, bitmap.N());
+
+  if (bitmap.N() > 1 && bmpState > 1)
+  {
+    if (bitmap.GetFramesAreHorizontal())
+    {
+      srcX = bitmap.W() * (bmpState - 1) / bitmap.N();
+    }
+    else
+    {
+      srcY = bitmap.H() * (bmpState - 1) / bitmap.N();
+    }
+  }
+
+   PathTransformSave();
+   PathTransformTranslate(bounds.L, bounds.T);
+   IRECT newBounds(0., 0., static_cast<float>(bitmap.FW()), static_cast<float>(bitmap.FH()));
+   PathTransformScale(bounds.W() / static_cast<float>(bitmap.FW()), bounds.H() / static_cast<float>(bitmap.FH()));
+   return DrawBitmap(bitmap, newBounds, srcX, srcY, pBlend);
+   PathTransformRestore();
+}
+
+// End of Extensions
+
 void IGraphics::SetScreenScale(float scale)
 {
   mScreenScale = scale;

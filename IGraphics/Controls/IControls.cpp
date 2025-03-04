@@ -1630,7 +1630,7 @@ IBButtonControl::IBButtonControl(float x, float y, const IBitmap& bitmap, IActio
 }
 
 IBButtonControl::IBButtonControl(const IRECT& bounds, const IBitmap& bitmap, IActionFunction aF)
-  : IButtonControlBase(bounds.GetCentredInside(bitmap), aF)
+  : IButtonControlBase(bounds, aF)
   , IBitmapBase(bitmap)
 {
   AttachIControl(this);
@@ -1644,7 +1644,7 @@ IBSwitchControl::IBSwitchControl(float x, float y, const IBitmap& bitmap, int pa
 }
 
 IBSwitchControl::IBSwitchControl(const IRECT& bounds, const IBitmap& bitmap, int paramIdx)
-: ISwitchControlBase(bounds.GetCentredInside(bitmap), paramIdx)
+: ISwitchControlBase(bounds, paramIdx)
 , IBitmapBase(bitmap)
 {
   AttachIControl(this);

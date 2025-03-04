@@ -606,10 +606,11 @@ void IGraphicsSkia::DrawBitmap(const IBitmap& bitmap, const IRECT& dest, int src
   mCanvas->translate(-srcX * scale2, -srcY * scale2);
   
 #ifdef IGRAPHICS_CPU
-  auto samplingOptions = SkSamplingOptions(SkFilterMode::kLinear, SkMipmapMode::kNone);
+  //auto samplingOptions = SkSamplingOptions(SkFilterMode::kLinear, SkMipmapMode::kNone);
+  auto samplingOptions = SkSamplingOptions(SkFilterMode::kLinear, SkMipmapMode::kLast);
 #else
   auto samplingOptions = SkSamplingOptions(SkCubicResampler::Mitchell());
-#endif
+  #endif
     
   if (image->mIsSurface)
     image->mSurface->draw(mCanvas, 0.0, 0.0, samplingOptions, &p);

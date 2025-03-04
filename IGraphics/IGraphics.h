@@ -87,6 +87,17 @@ class IGraphics
 public:
 #pragma mark - Drawing API implementation
 
+  //Start of Extensions
+
+  /** Draw a bitmap (raster) image to the graphics context, scaling the image to fit the bounds
+  * @param bitmap The bitmap image to draw to the graphics context
+  * @param bounds The rectangular region to draw the image in
+  * @param pBlend Optional blend method */
+  virtual void DrawFittedBitmap(const IBitmap& bitmap, const IRECT& bounds, int frame, const IBlend* pBlend = 0);
+
+  //End of Extensions
+
+
   /** Called at the beginning of drawing. Call base implementation if overridden. */
   virtual void BeginFrame();
   
@@ -979,7 +990,7 @@ protected:
 
   /** Creates a platform native text entry field.
   * @param paramIdx The index of the parameter associated with the text entry field.
-  * @param text The IText style for the text entry field text.
+  * @param text The text to be displayed in the text entry field.
   * @param bounds The rectangle that defines the size and position of the text entry field.
   * @param length The maximum allowed length of the text in the text entry field.
   * @param str The initial string to be displayed in the text entry field. */
@@ -991,7 +1002,7 @@ protected:
    * @param isAsync This gets set true on platforms where popupmenu creation is asyncronous
    * @return A ptr to the chosen IPopupMenu or nullptr in the case of async or dismissed menu */
   virtual IPopupMenu* CreatePlatformPopupMenu(IPopupMenu& menu, const IRECT bounds, bool& isAsync) = 0;
-  
+
 #pragma mark - Base implementation
 public:
   IGraphics(IGEditorDelegate& dlg, int w, int h, int fps = DEFAULT_FPS, float scale = 1.);

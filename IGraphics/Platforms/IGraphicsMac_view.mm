@@ -132,10 +132,6 @@ static int MacKeyEventToVK(NSEvent* pEvent, int& flag)
   return code;
 }
 
-#ifndef IGRAPHICS_MENU_RCVR
-#warning The iPlug2 Obj-C namespace is not customized. Did you forget to include IPlugOBJCPrefix.pch?
-#endif
-
 @implementation IGRAPHICS_MENU_RCVR
 
 - (NSMenuItem*) menuItem

@@ -24,7 +24,6 @@
 #include "IRTTextControl.h"
 #include "IVKeyboardControl.h"
 #include "IVMeterControl.h"
-#include "IVSpectrumAnalyzerControl.h"
 #include "IVScopeControl.h"
 #include "IVMultiSliderControl.h"
 #include "IVDisplayControl.h"
