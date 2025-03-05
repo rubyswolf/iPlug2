@@ -1691,6 +1691,74 @@ struct IRECT
   void DBGPrint() { DBGMSG("L: %f, T: %f, R: %f, B: %f,: W: %f, H: %f\n", L, T, R, B, W(), H()); }
 };
 
+struct ICircle
+{
+public:
+  float x, y, radius;
+
+  // Default constructor
+  ICircle(float cx, float cy, float r)
+    : x(cx)
+    , y(cy)
+    , radius(r)
+  {
+    assert(r > 0);
+  }
+
+  // Constructor from centre and point on circumference
+  ICircle(float cx, float cy, float px, float py)
+    : x(cx)
+    , y(cy)
+    , radius(std::hypot(px - cx, py - cy))
+  {
+    assert(radius > 0);
+  }
+
+  // Constructor from three points (asserting they form a circle)
+  ICircle(float x1, float y1, float x2, float y2, float x3, float y3)
+  {
+    float a = x1 * (y2 - y3) - y1 * (x2 - x3) + x2 * y3 - x3 * y2;
+    assert(a != 0); // Ensures points are not collinear
+
+    float b1 = (x1 * x1 + y1 * y1) * (y3 - y2);
+    float b2 = (x2 * x2 + y2 * y2) * (y1 - y3);
+    float b3 = (x3 * x3 + y3 * y3) * (y2 - y1);
+    float c1 = (x1 * x1 + y1 * y1) * (x2 - x3);
+    float c2 = (x2 * x2 + y2 * y2) * (x3 - x1);
+    float c3 = (x3 * x3 + y3 * y3) * (x1 - x2);
+
+    x = 0.5f * (b1 + b2 + b3) / a;
+    y = 0.5f * (c1 + c2 + c3) / a;
+    radius = std::hypot(x - x1, y - y1);
+  }
+
+  // Inscribed circle (inside a square)
+  ICircle(const IRECT& rect)
+  {
+    assert(rect.W() == rect.H()); // Must be a square
+    x = rect.MW();
+    y = rect.MH();
+    radius = rect.W() / 2;
+  }
+
+  // Scale about centre
+  void Scale(float factor)
+  {
+    assert(factor > 0);
+    radius *= factor;
+  }
+
+  // Shift position
+  void Shift(float dx, float dy)
+  {
+    x += dx;
+    y += dy;
+  }
+
+  // Hit detection
+  inline bool Contains(float px, float py) const { return std::hypot(px - x, py - y) <= radius; }
+};
+
 /** Used to manage mouse modifiers i.e. right click and shift/control/alt keys. Also used for multiple touches, to keep track of touch radius */
 struct IMouseMod
 {

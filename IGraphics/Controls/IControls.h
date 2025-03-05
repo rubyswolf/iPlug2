@@ -705,6 +705,8 @@ public:
 
   IBButtonControl(const IRECT& bounds, const IBitmap& bitmap, IActionFunction aF = DefaultClickActionFunc);
 
+  IBButtonControl(const IRECT& controlBounds, const IRECT& renderBounds, const IBitmap& bitmap, IActionFunction aF = DefaultClickActionFunc);
+
   void Draw(IGraphics& g) override  { DrawBitmap(g); }
   void OnRescale() override { mBitmap = GetUI()->GetScaledBitmap(mBitmap); }
 };
@@ -726,7 +728,7 @@ public:
    * @param bitmap The bitmap resource for the control
    * @param paramIdx The parameter index to link this control to */
   IBSwitchControl(const IRECT& bounds, const IBitmap& bitmap, int paramIdx = kNoParameter);
-  
+
   virtual ~IBSwitchControl() {}
   void Draw(IGraphics& g) override { DrawBitmap(g); }
   void OnRescale() override { mBitmap = GetUI()->GetScaledBitmap(mBitmap); }
