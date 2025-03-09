@@ -112,10 +112,14 @@ int IControl::GetParamIdx(int valIdx) const
   return mVals[valIdx].idx;
 }
 
-void IControl::SetParamIdx(int paramIdx, int valIdx)
+void IControl::SetParamIdx(int paramIdx, int valIdx, bool jumpToNewValue)
 {
   assert(valIdx > kNoValIdx && valIdx < NVals());
   mVals.at(valIdx).idx = paramIdx;
+  if (jumpToNewValue)
+  {
+    mVals.at(valIdx).value = GetParam(valIdx)->GetNormalized();
+  }
   SetDirty(false);
 }
 
