@@ -98,7 +98,7 @@ void IGraphics::DrawFittedBitmap(const IBitmap& bitmap, const IRECT& bounds, int
    PathTransformTranslate(bounds.L, bounds.T);
    IRECT newBounds(0., 0., static_cast<float>(bitmap.FW()), static_cast<float>(bitmap.FH()));
    PathTransformScale(bounds.W() / static_cast<float>(bitmap.FW()), bounds.H() / static_cast<float>(bitmap.FH()));
-   return DrawBitmap(bitmap, newBounds, srcX, srcY, pBlend);
+   DrawBitmap(bitmap, newBounds, srcX, srcY, pBlend);
    PathTransformRestore();
 }
 
