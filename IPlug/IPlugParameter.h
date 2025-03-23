@@ -311,9 +311,9 @@ public:
   /** Replaces the parameter's current value with the default one  */
   void SetToDefault() { mValue.store(mDefault); }
 
-  /** Set the parameter's default value, and set the parameter to that default
+  /** Set the parameter's default value
    * @param value The new default value */
-  void SetDefault(double value) { mDefault = value; SetToDefault(); }
+  void SetDefault(double value) { mDefault = value; }
 
   /** Set some text to display for a particular value, e.g. -70dB could display "-inf"
    * @param value The value for which to display the text
