@@ -31,7 +31,7 @@
  */
 
 #ifndef NO_IGRAPHICS
-#if defined(IGRAPHICS_NANOVG) + defined(IGRAPHICS_CANVAS) + defined(IGRAPHICS_SKIA) != 1
+#if defined(IGRAPHICS_NANOVG) + defined(IGRAPHICS_SKIA) != 1
 #error Either NO_IGRAPHICS or one and only one choice of graphics library must be defined!
 #endif
 #endif
@@ -570,7 +570,7 @@ public:
   /** Applies a drop shadow directly onto a layer
   * @param layer - the layer to add the shadow to 
   * @param shadow - the shadow to add */
-  void ApplyLayerDropShadow(ILayerPtr& layer, const IShadow& shadow);
+  virtual void ApplyLayerDropShadow(ILayerPtr& layer, const IShadow& shadow);
 
   /** Get the contents of a layer as Raw RGBA bitmap data
    * NOTE: you should only call this within IControl::Draw()
@@ -981,6 +981,17 @@ public:
   /** Get the app group ID on macOS and iOS, returns emtpy string on other OSs */
   virtual const char* GetAppGroupID() const { return ""; }
 
+  // An RAII helper to manage the IGraphics GL context
+  class ScopedGLContext
+  {
+  public:
+    ScopedGLContext(IGraphics* pGraphics)
+    : mIGraphics(*pGraphics) { mIGraphics.ActivateGLContext(); }
+    ~ScopedGLContext() { mIGraphics.DeactivateGLContext(); }
+  private:
+    IGraphics& mIGraphics;
+  };
+  
 protected:
   /* Activate the context for the view (GL only) */
   virtual void ActivateGLContext() {};
@@ -1349,6 +1360,9 @@ public:
   
   /* Called by controls to display text in the bubble control */
   void ShowBubbleControl(IControl* pCaller, float x, float y, const char* str, EDirection dir = EDirection::Horizontal, IRECT minimumContentBounds = IRECT());
+  
+  /* Sets the region of the IGraphics context that should be used for the FPS display */
+  void SetFPSDisplayBounds(const IRECT& bounds) { mPerfDisplayBounds = bounds; }
 
   /** Shows a control to display the frame rate of drawing
    * @param enable \c true to show */
@@ -1540,8 +1554,9 @@ public:
   /** @param x The X coordinate at which the mouse event occurred
    * @param y The Y coordinate at which the mouse event occurred
    * @param mod IMouseMod struct contain information about the modifiers held
-   * @param delta Delta value \todo explain */
-  void OnMouseWheel(float x, float y, const IMouseMod& mod, float delta);
+   * @param delta Delta value \todo explain
+   * @return /c true on handled */
+  bool OnMouseWheel(float x, float y, const IMouseMod& mod, float delta);
 
   /** @param x The X coordinate of the mouse cursor at the time of the key press
    * @param y The Y coordinate of the mouse cursor at the time of the key press
@@ -1597,8 +1612,8 @@ public:
   /** Used to tell the graphics context to stop tracking mouse interaction with a control */
   void ReleaseMouseCapture();
 
-  /** @return \c true if the context can handle mouse overs */
-  bool CanEnableMouseOver() const { return mEnableMouseOver; }
+  /** @return \c true if the context has mouse overs enabled */
+  bool MouseOverEnabled() const { return mEnableMouseOver; }
 
   /** @return An integer representing the control index in IGraphics::mControls which the mouse is over, or -1 if it is not */
   inline int GetMouseOver() const { return mMouseOverIdx; }
@@ -1736,9 +1751,6 @@ protected:
    * @param font Valid PlatformFontPtr, loaded via LoadPlatformFont
    * @return bool \c true if the font was loaded successfully */
   virtual bool LoadAPIFont(const char* fontID, const PlatformFontPtr& font) = 0;
-
-  /** Specialized in IGraphicsCanvas drawing backend */
-  virtual bool AssetsLoaded() { return true; }
     
   /** @return int The index of the alpha component in a drawing backend's pixel (RGBA or ARGB) */
   virtual int AlphaChannel() const = 0;
@@ -1815,6 +1827,8 @@ private:
   std::unique_ptr<IControl> mLiveEdit;
   
   IPopupMenu mPromptPopupMenu;
+  
+  IRECT mPerfDisplayBounds;
   
   WDL_String mSharedResourcesSubPath;
   

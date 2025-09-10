@@ -163,7 +163,7 @@ static int MacKeyEventToVK(NSEvent* pEvent, int& flag)
   {
     IPopupMenu::Item* pMenuItem = pMenu->GetItem(i);
 
-    nsMenuItemTitle = [[[NSMutableString alloc] initWithCString:pMenuItem->GetText()] autorelease];
+    nsMenuItemTitle = [[[NSMutableString alloc] initWithUTF8String:pMenuItem->GetText()] autorelease];
 
     if (pMenu->GetPrefix())
     {
@@ -438,7 +438,7 @@ extern StaticStorage<CoreTextFontDescriptor> sFontDescriptorCache;
 {
   [super prepareOpenGL];
   
-  [[self openGLContext] makeCurrentContext];
+  [self activateGLContext];
   
   // Synchronize buffer swaps with vertical refresh rate
   GLint swapInt = 1;
@@ -644,9 +644,6 @@ static CVReturn displayLinkCallback(CVDisplayLinkRef displayLink, const CVTimeSt
       mGraphics->Draw(drawRects);
     }
   }
-  #else // this gets called on resize
-  //TODO: set GL context/flush?
-  //mGraphics->Draw(mDirtyRects);
   #endif
 }
 
@@ -658,19 +655,14 @@ static CVReturn displayLinkCallback(CVDisplayLinkRef displayLink, const CVTimeSt
   {
     mGraphics->SetAllControlsClean();
       
-    #if !defined IGRAPHICS_GL && !defined IGRAPHICS_METAL // for layer-backed views setNeedsDisplayInRect/drawRect is not called
+    #if defined IGRAPHICS_CPU
       for (int i = 0; i < mDirtyRects.Size(); i++)
         [self setNeedsDisplayInRect:ToNSRect(mGraphics, mDirtyRects.Get(i))];
     #else
-      #ifdef IGRAPHICS_GL
-        [[self openGLContext] makeCurrentContext];
-      #endif
+    IGraphics::ScopedGLContext scopedGLCtx {mGraphics};
       // so just draw on each frame, if something is dirty
-      mGraphics->Draw(mDirtyRects);
-    #endif
-    #ifdef IGRAPHICS_GL
-    [[self openGLContext] flushBuffer];
-    [NSOpenGLContext clearCurrentContext];
+    mGraphics->Draw(mDirtyRects);
+    [self swapBuffers]; // No-op for Metal
     #endif
   }
 }
@@ -1264,9 +1256,10 @@ static void MakeCursorFromName(NSCursor*& cursor, const char *name)
     NSArray* pFiles = [pPasteBoard propertyListForType:NSFilenamesPboardType];
     NSPoint point = [sender draggingLocation];
     NSPoint relativePoint = [self convertPoint: point fromView:nil];
-    // TODO - fix or remove these values
-    float x = relativePoint.x;// - 2.f;
-    float y = relativePoint.y;// - 3.f;
+
+    const float scale = mGraphics->GetDrawScale();
+    const float x = relativePoint.x / scale;
+    const float y = relativePoint.y / scale;
     if ([pFiles count] == 1)
     {
       NSString* pFirstFile = [pFiles firstObject];
@@ -1300,10 +1293,10 @@ static void MakeCursorFromName(NSCursor*& cursor, const char *name)
                                                           self.frame.size.height * scale)];
 }
 #endif
-#ifdef IGRAPHICS_GL
+#if defined IGRAPHICS_GL2 || defined IGRAPHICS_GL3
 - (void) frameDidChange:(NSNotification*) pNotification
 {
-  [[self openGLContext] makeCurrentContext];
+  [self activateGLContext];
 }
 #endif
 
@@ -1343,5 +1336,29 @@ static void MakeCursorFromName(NSCursor*& cursor, const char *name)
 //  else // EUIResizerMode::Size
 //    mGraphics->Resize(mGraphics->Width(), mGraphics->Height(), Clip(std::min(scaleX, scaleY), 0.1f, 10.f));
 //}
+
+- (void) activateGLContext
+{
+#if defined IGRAPHICS_GL2 || defined IGRAPHICS_GL3
+  [[self openGLContext] makeCurrentContext];
+#endif
+  
+}
+
+- (void) deactivateGLContext
+{
+#if defined IGRAPHICS_GL2 || defined IGRAPHICS_GL3
+  [NSOpenGLContext clearCurrentContext];
+#endif
+
+}
+
+- (void) swapBuffers
+{
+#if defined IGRAPHICS_GL2 || defined IGRAPHICS_GL3
+  [[self openGLContext] flushBuffer];
+#endif
+  
+}
 
 @end
