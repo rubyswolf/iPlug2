@@ -134,6 +134,7 @@ protected:
     
   float DoMeasureText(const IText& text, const char* str, IRECT& bounds) const override;
   void DoDrawText(const IText& text, const char* str, const IRECT& bounds, const IBlend* pBlend) override;
+  void DoDrawInvertedText(const IText& text, const char* str, const IRECT& bounds, const IBlend* pBlend) override;
 
   bool LoadAPIFont(const char* fontID, const PlatformFontPtr& font) override;
 

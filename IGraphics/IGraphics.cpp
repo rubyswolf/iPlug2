@@ -720,6 +720,14 @@ void IGraphics::DrawText(const IText& text, const char* str, const IRECT& bounds
   DoDrawText(text, str, bounds, pBlend);
 }
 
+void IGraphics::DrawInvertedText(const IText& text, const char* str, const IRECT& bounds, const IBlend* pBlend)
+{
+  if (!str || str[0] == '\0')
+    return;
+    
+  DoDrawInvertedText(text, str, bounds, pBlend);
+}
+
 float IGraphics::MeasureText(const IText& text, const char* str, IRECT& bounds) const
 {
   if (!str || str[0] == '\0')

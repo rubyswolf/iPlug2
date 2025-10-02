@@ -757,6 +757,30 @@ void IGraphicsSkia::DoDrawText(const IText& text, const char* str, const IRECT& 
   PathTransformRestore();
 }
 
+void IGraphicsSkia::DoDrawInvertedText(const IText& text, const char* str, const IRECT& bounds, const IBlend* pBlend)
+{
+  IRECT measured = bounds;
+
+  SkFont font;
+  font.setEdging(SkFont::Edging::kSubpixelAntiAlias);
+
+  double x, y;
+  PrepareAndMeasureText(text, str, measured, x, y, font);
+
+  PathTransformSave();
+  DoTextRotation(text, bounds, measured);
+
+  SkPaint paint;
+  paint.setColor(SkiaColor(text.mFGColor, pBlend));
+
+  // Set blending mode to "difference" to invert colors
+  paint.setBlendMode(SkBlendMode::kDifference);
+
+  mCanvas->drawSimpleText(str, strlen(str), SkTextEncoding::kUTF8, x, y, font, paint);
+
+  PathTransformRestore();
+}
+
 void IGraphicsSkia::PathStroke(const IPattern& pattern, float thickness, const IStrokeOptions& options, const IBlend* pBlend)
 {
   SkPaint paint = SkiaPaint(pattern, pBlend);

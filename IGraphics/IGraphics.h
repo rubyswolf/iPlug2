@@ -351,6 +351,7 @@ public:
    * @param bounds The rectangular region in the graphics where you would like to draw the text
    * @param pBlend Optional blend method */
   void DrawText(const IText& text, const char* str, const IRECT& bounds, const IBlend* pBlend = 0);
+  void DrawInvertedText(const IText& text, const char* str, const IRECT& bounds, const IBlend* pBlend = 0);
 
   /** Draw some text to the graphics context at a point
    * @param text An IText struct containing font and text properties and layout info
@@ -1787,6 +1788,7 @@ protected:
    * @param bounds \todo
    * @param pBlend \todo */
   virtual void DoDrawText(const IText& text, const char* str, const IRECT& bounds, const IBlend* pBlend = nullptr) = 0;
+  virtual void DoDrawInvertedText(const IText& text, const char* str, const IRECT& bounds, const IBlend* pBlend = nullptr) = 0;
 
   /** \todo
    * @param text \todo
