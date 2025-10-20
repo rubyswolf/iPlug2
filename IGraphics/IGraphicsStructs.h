@@ -502,6 +502,7 @@ const IColor COLOR_WHITE(255, 255, 255, 255);
 const IColor COLOR_RED(255, 255, 0, 0);
 const IColor COLOR_GREEN(255, 0, 255, 0);
 const IColor COLOR_BLUE(255, 0, 0, 255);
+const IColor COLOR_CYAN(255, 0, 255, 255);
 const IColor COLOR_YELLOW(255, 255, 255, 0);
 const IColor COLOR_ORANGE(255, 255, 127, 0);
 const IColor COLOR_INDIGO(255, 75, 0, 130);
