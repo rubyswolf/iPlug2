@@ -2617,42 +2617,42 @@ void IGraphics::DrawEllipse(const IColor& color, float x, float y, float r1, flo
   PathStroke(color, thickness, IStrokeOptions(), pBlend);
 }
 
-void IGraphics::FillTriangle(const IColor& color, float x1, float y1, float x2, float y2, float x3, float y3, const IBlend* pBlend)
+void IGraphics::FillTriangle(const IPattern& color, float x1, float y1, float x2, float y2, float x3, float y3, const IBlend* pBlend)
 {
   PathClear();
   PathTriangle(x1, y1, x2, y2, x3, y3);
   PathFill(color, IFillOptions(), pBlend);
 }
 
-void IGraphics::FillRect(const IColor& color, const IRECT& bounds, const IBlend* pBlend)
+void IGraphics::FillRect(const IPattern& color, const IRECT& bounds, const IBlend* pBlend)
 {
   PathClear();
   PathRect(bounds);
   PathFill(color, IFillOptions(), pBlend);
 }
 
-void IGraphics::FillRoundRect(const IColor& color, const IRECT& bounds, float cornerRadius, const IBlend* pBlend)
+void IGraphics::FillRoundRect(const IPattern& color, const IRECT& bounds, float cornerRadius, const IBlend* pBlend)
 {
   PathClear();
   PathRoundRect(bounds, cornerRadius);
   PathFill(color, IFillOptions(), pBlend);
 }
 
-void IGraphics::FillRoundRect(const IColor& color, const IRECT& bounds, float cRTL, float cRTR, float cRBR, float cRBL, const IBlend* pBlend)
+void IGraphics::FillRoundRect(const IPattern& color, const IRECT& bounds, float cRTL, float cRTR, float cRBR, float cRBL, const IBlend* pBlend)
 {
   PathClear();
   PathRoundRect(bounds, cRTL, cRTR, cRBR, cRBL);
   PathFill(color, IFillOptions(), pBlend);
 }
 
-void IGraphics::FillConvexPolygon(const IColor& color, float* x, float* y, int nPoints, const IBlend* pBlend)
+void IGraphics::FillConvexPolygon(const IPattern& color, float* x, float* y, int nPoints, const IBlend* pBlend)
 {
   PathClear();
   PathConvexPolygon(x, y, nPoints);
   PathFill(color, IFillOptions(), pBlend);
 }
 
-void IGraphics::FillArc(const IColor& color, float cx, float cy, float r, float a1, float a2, const IBlend* pBlend)
+void IGraphics::FillArc(const IPattern& color, float cx, float cy, float r, float a1, float a2, const IBlend* pBlend)
 {
   PathClear();
   PathMoveTo(cx, cy);
@@ -2661,21 +2661,21 @@ void IGraphics::FillArc(const IColor& color, float cx, float cy, float r, float 
   PathFill(color, IFillOptions(), pBlend);
 }
 
-void IGraphics::FillCircle(const IColor& color, float cx, float cy, float r, const IBlend* pBlend)
+void IGraphics::FillCircle(const IPattern& color, float cx, float cy, float r, const IBlend* pBlend)
 {
   PathClear();
   PathCircle(cx, cy, r);
   PathFill(color, IFillOptions(), pBlend);
 }
 
-void IGraphics::FillEllipse(const IColor& color, const IRECT& bounds, const IBlend* pBlend)
+void IGraphics::FillEllipse(const IPattern& color, const IRECT& bounds, const IBlend* pBlend)
 {
   PathClear();
   PathEllipse(bounds);
   PathFill(color, IFillOptions(), pBlend);
 }
 
-void IGraphics::FillEllipse(const IColor& color, float x, float y, float r1, float r2, float angle, const IBlend* pBlend)
+void IGraphics::FillEllipse(const IPattern& color, float x, float y, float r1, float r2, float angle, const IBlend* pBlend)
 {
   PathClear();
   PathEllipse(x, y, r1, r2, angle);

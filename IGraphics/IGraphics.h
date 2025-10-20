@@ -278,20 +278,20 @@ public:
    * @param x3 The X coordinate of the third vertex
    * @param y3 The Y coordinate of the third vertex
    * @param pBlend Optional blend method */
-  virtual void FillTriangle(const IColor& color, float x1, float y1, float x2, float y2, float x3, float y3, const IBlend* pBlend = 0);
+  virtual void FillTriangle(const IPattern& color, float x1, float y1, float x2, float y2, float x3, float y3, const IBlend* pBlend = 0);
 
   /** Fill a rectangular region of the graphics context with a color
    * @param color The color to fill the shape with
    * @param bounds The rectangular region to fill the shape in
    * @param pBlend Optional blend method */
-  virtual void FillRect(const IColor& color, const IRECT& bounds, const IBlend* pBlend = 0);
+  virtual void FillRect(const IPattern& color, const IRECT& bounds, const IBlend* pBlend = 0);
 
   /** Fill a rounded rectangle with a color
    * @param color The color to fill the shape with
    * @param bounds The rectangular region to fill the shape in
    * @param cornerRadius The corner radius in pixels
    * @param pBlend Optional blend method */
-  virtual void FillRoundRect(const IColor& color, const IRECT& bounds, float cornerRadius = 5.f, const IBlend* pBlend = 0);
+  virtual void FillRoundRect(const IPattern& color, const IRECT& bounds, float cornerRadius = 5.f, const IBlend* pBlend = 0);
 
   /** Fill a rounded rectangle with a color
    * @param color The color to fill the shape with
@@ -301,7 +301,7 @@ public:
    * @param cRBR The bottom right corner radius in pixels
    * @param cRBL The bottom left corner radius in pixels
    * @param pBlend Optional blend method */
-  virtual void FillRoundRect(const IColor& color, const IRECT& bounds, float cRTL, float cRTR, float cRBR, float cRBL, const IBlend* pBlend = 0);
+  virtual void FillRoundRect(const IPattern& color, const IRECT& bounds, float cRTL, float cRTR, float cRBR, float cRBL, const IBlend* pBlend = 0);
   
   /** Fill a circle with a color
    * @param color The color to fill the shape with
@@ -309,13 +309,13 @@ public:
    * @param cy The Y coordinate of the centre of the circle
    * @param r The radius of the circle
    * @param pBlend Optional blend method */
-  virtual void FillCircle(const IColor& color, float cx, float cy, float r, const IBlend* pBlend = 0);
+  virtual void FillCircle(const IPattern& color, float cx, float cy, float r, const IBlend* pBlend = 0);
 
   /** Fill an ellipse within a rectangular region of the graphics context
    * @param color The color to fill the shape with
    * @param bounds The rectangular region to fill the shape in
    * @param pBlend Optional blend method */
-  virtual void FillEllipse(const IColor& color, const IRECT& bounds, const IBlend* pBlend = 0);
+  virtual void FillEllipse(const IPattern& color, const IRECT& bounds, const IBlend* pBlend = 0);
   
   /** Fill an ellipse
    * @param color The color to draw the shape with
@@ -325,7 +325,7 @@ public:
    * @param r2 The radius of the ellipse along the line found by rotating the y-axis by the angle
    * @param angle The angle rotates the radii r1 and r2 clockwise in degrees to adjust the orientation
    * @param pBlend Optional blend method */
-  virtual void FillEllipse(const IColor& color, float x, float y, float r1, float r2, float angle = 0.0, const IBlend* pBlend = 0);
+  virtual void FillEllipse(const IPattern& color, float x, float y, float r1, float r2, float angle = 0.0, const IBlend* pBlend = 0);
   
   /** Fill an arc segment with a color
    * @param color The color to fill the shape with
@@ -335,7 +335,7 @@ public:
    * @param a1 the start angle  of the arc at in degrees clockwise where 0 is up
    * @param a2 the end angle  of the arc at in degrees clockwise where 0 is up
    * @param pBlend Optional blend method */
-  virtual void FillArc(const IColor& color, float cx, float cy, float r, float a1, float a2, const IBlend* pBlend = 0);
+  virtual void FillArc(const IPattern& color, float cx, float cy, float r, float a1, float a2, const IBlend* pBlend = 0);
 
   /** Fill a convex polygon with a color
    * @param color The color to fill the shape with
@@ -343,7 +343,7 @@ public:
    * @param y Pointer to the first element in an array of Y coordinates for the vertices of the polygon
    * @param nPoints The number of points in the coordinate arrays
    * @param pBlend Optional blend method */
-  virtual void FillConvexPolygon(const IColor& color, float* x, float* y, int nPoints, const IBlend* pBlend = 0);
+  virtual void FillConvexPolygon(const IPattern& color, float* x, float* y, int nPoints, const IBlend* pBlend = 0);
 
   /** Draw some text to the graphics context in a specific rectangle
    * @param text An IText struct containing font and text properties and layout info
